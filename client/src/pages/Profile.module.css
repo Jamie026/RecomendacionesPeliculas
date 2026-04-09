@@ -1,0 +1,124 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 7rem 2rem 4rem;
+}
+
+.header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.username {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+}
+
+.email {
+    color: var(--text-secondary);
+}
+
+.section {
+    margin-bottom: 3rem;
+}
+
+.sectionTitle {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.sectionTitle span {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 50px;
+}
+
+.empty {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+}
+
+.miniCard {
+    position: relative;
+    cursor: pointer;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: border-color var(--transition);
+}
+
+.miniCard:hover {
+    border-color: var(--accent);
+}
+
+.miniPoster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+}
+
+.removeBtn {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    background: rgba(10, 10, 15, 0.85);
+    border: none;
+    color: var(--text-secondary);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition:
+        opacity var(--transition),
+        color var(--transition);
+}
+
+.miniCard:hover .removeBtn {
+    opacity: 1;
+}
+
+.removeBtn:hover {
+    color: var(--accent);
+}
+
+.miniInfo {
+    padding: 0.6rem;
+}
+
+.miniTitle {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.2rem;
+}
+
+.miniYear {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}

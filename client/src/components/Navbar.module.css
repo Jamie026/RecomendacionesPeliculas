@@ -8,6 +8,7 @@
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     z-index: 100;
 }
 
@@ -16,4 +17,47 @@
     font-weight: 700;
     color: var(--accent);
     letter-spacing: 1px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.username {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: color var(--transition);
+}
+
+.username:hover {
+    color: var(--text-primary);
+}
+
+.loginBtn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.logoutBtn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.logoutBtn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
 }

@@ -8,24 +8,22 @@ const tmdb = axios.create({
     },
 });
 
-const searchMovies = async (query) => {
+const searchMovies = async (query, page = 1) => {
     const { data } = await tmdb.get('/search/movie', {
-        params: { query, page: 1, language: 'es-ES' },
+        params: { query, page, language: 'es-ES' },
     });
-    return data.results;
+    return { results: data.results, totalPages: data.total_pages };
 };
 
-const discoverMovies = async (genreIds) => {
+const discoverMovies = async (genreIds, page = 1) => {
     const params = {
         sort_by: 'popularity.desc',
         language: 'es-ES',
-        page: 1,
+        page,
     };
-
     if (genreIds && genreIds.length) params.with_genres = genreIds.join(',');
-
     const { data } = await tmdb.get('/discover/movie', { params });
-    return data.results;
+    return { results: data.results, totalPages: data.total_pages };
 };
 
 const getMovieDetails = async (movieId) => {
@@ -35,4 +33,11 @@ const getMovieDetails = async (movieId) => {
     return data;
 };
 
-module.exports = { searchMovies, discoverMovies, getMovieDetails };
+const getMovieVideos = async (movieId) => {
+    const { data } = await tmdb.get('/movie/' + movieId + '/videos', {
+        params: { language: 'es-ES' },
+    });
+    return data.results;
+};
+
+module.exports = { searchMovies, discoverMovies, getMovieDetails, getMovieVideos };

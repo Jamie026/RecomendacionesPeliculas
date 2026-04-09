@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getMovieDetails } from '../services/api';
+import { getMovieDetails, getMovieVideos } from '../services/api';
+import TrailerModal from '../components/TrailerModal';
 import styles from './MovieDetail.module.css';
 
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/';
@@ -11,19 +12,25 @@ export default function MovieDetail() {
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [trailer, setTrailer] = useState(null);
+    const [showTrailer, setShowTrailer] = useState(false);
 
     useEffect(() => {
-        const fetch = async () => {
+        const fetchData = async () => {
             try {
-                const { data } = await getMovieDetails(id);
-                setMovie(data);
+                const [{ data: movieData }, { data: trailerData }] = await Promise.all([
+                    getMovieDetails(id),
+                    getMovieVideos(id),
+                ]);
+                setMovie(movieData);
+                setTrailer(trailerData);
             } catch {
                 navigate('/');
             } finally {
                 setLoading(false);
             }
         };
-        fetch();
+        fetchData();
     }, [id, navigate]);
 
     if (loading)
@@ -36,11 +43,9 @@ export default function MovieDetail() {
     if (!movie) return null;
 
     const backdropUrl = movie.backdrop_path ? IMAGE_BASE + 'original' + movie.backdrop_path : null;
-
     const posterUrl = movie.poster_path
         ? IMAGE_BASE + 'w500' + movie.poster_path
         : 'https://via.placeholder.com/500x750?text=Sin+imagen';
-
     const hours = Math.floor(movie.runtime / 60);
     const minutes = movie.runtime % 60;
 
@@ -121,9 +126,24 @@ export default function MovieDetail() {
                                     .join(', ')}
                             </p>
                         )}
+
+                        {trailer && (
+                            <motion.button
+                                className={styles.trailerBtn}
+                                onClick={() => setShowTrailer(true)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                ▶ Ver trailer
+                            </motion.button>
+                        )}
                     </motion.div>
                 </div>
             </div>
+
+            {showTrailer && trailer && (
+                <TrailerModal videoKey={trailer.key} onClose={() => setShowTrailer(false)} />
+            )}
         </motion.div>
     );
 }

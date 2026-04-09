@@ -6,22 +6,29 @@ export default function useSearch() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [parsedQuery, setParsedQuery] = useState('');
+    const [currentQuery, setCurrentQuery] = useState('');
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
 
-    const search = async (query) => {
+    const search = async (query, pageNumber = 1) => {
         if (!query.trim()) return;
         setLoading(true);
         setError(null);
         try {
-            const { data } = await smartSearch(query);
+            const { data } = await smartSearch(query, pageNumber);
             setMovies(data.movies);
             setParsedQuery(data.keywords);
-        } catch (err) {
-            console.error(err);
+            setCurrentQuery(query);
+            setPage(data.page);
+            setTotalPages(Math.min(data.totalPages, 10));
+        } catch {
             setError('Error al buscar películas');
         } finally {
             setLoading(false);
         }
     };
 
-    return { movies, loading, error, parsedQuery, search };
+    const goToPage = (pageNumber) => search(currentQuery, pageNumber);
+
+    return { movies, loading, error, parsedQuery, page, totalPages, search, goToPage };
 }

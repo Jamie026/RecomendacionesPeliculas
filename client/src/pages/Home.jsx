@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchBar from '../components/SearchBar';
 import MovieCard from '../components/MovieCard';
+import Pagination from '../components/Pagination';
 import useSearch from '../hooks/useSearch';
 import styles from './Home.module.css';
 
 export default function Home() {
-    const { movies, loading, error, parsedQuery, search } = useSearch();
+    const { movies, loading, error, parsedQuery, page, totalPages, search, goToPage } = useSearch();
 
     return (
         <motion.div
@@ -45,7 +46,6 @@ export default function Home() {
                         {error}
                     </motion.p>
                 )}
-
                 {parsedQuery && !loading && (
                     <motion.p
                         className={styles.parsedQuery}
@@ -55,7 +55,6 @@ export default function Home() {
                         Resultados para: <span>{parsedQuery}</span>
                     </motion.p>
                 )}
-
                 {loading && (
                     <motion.div
                         className={styles.loaderWrapper}
@@ -70,16 +69,19 @@ export default function Home() {
             </AnimatePresence>
 
             {!loading && movies.length > 0 && (
-                <motion.div
-                    className={styles.grid}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4 }}
-                >
-                    {movies.map((movie, i) => (
-                        <MovieCard key={movie.id} movie={movie} index={i} />
-                    ))}
-                </motion.div>
+                <>
+                    <motion.div
+                        className={styles.grid}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4 }}
+                    >
+                        {movies.map((movie, i) => (
+                            <MovieCard key={movie.id} movie={movie} index={i} />
+                        ))}
+                    </motion.div>
+                    <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} />
+                </>
             )}
         </motion.div>
     );
