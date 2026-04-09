@@ -40,4 +40,11 @@ const getMovieVideos = async (movieId) => {
     return data.results;
 };
 
-module.exports = { searchMovies, discoverMovies, getMovieDetails, getMovieVideos };
+const getMovieReviews = async (movieId) => {
+    const { data } = await tmdb.get('/movie/' + movieId + '/reviews', {
+        params: { language: 'en-US', page: 1 },
+    });
+    return data.results.slice(0, 5);
+};
+
+module.exports = { searchMovies, discoverMovies, getMovieDetails, getMovieVideos, getMovieReviews };

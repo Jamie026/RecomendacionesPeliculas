@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getMovieDetails, getMovieVideos } from '../services/api';
+import { getMovieDetails, getMovieVideos, getMovieReviews } from '../services/api';
 import TrailerModal from '../components/TrailerModal';
 import styles from './MovieDetail.module.css';
 
@@ -14,6 +14,20 @@ export default function MovieDetail() {
     const [loading, setLoading] = useState(true);
     const [trailer, setTrailer] = useState(null);
     const [showTrailer, setShowTrailer] = useState(false);
+    const [reviewSummary, setReviewSummary] = useState(null);
+    const [loadingReviews, setLoadingReviews] = useState(false);
+
+    const fetchReviews = async () => {
+        setLoadingReviews(true);
+        try {
+            const { data } = await getMovieReviews(id);
+            setReviewSummary(data.summary);
+        } catch {
+            // silent
+        } finally {
+            setLoadingReviews(false);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -119,6 +133,25 @@ export default function MovieDetail() {
 
                         <div className={styles.divider} />
                         <p className={styles.overview}>{movie.overview}</p>
+
+                        <div className={styles.reviewBox}>
+                            <div className={styles.reviewHeader}>
+                                <span className={styles.reviewTitle}>✦ Resumen de reseñas</span>
+                                {!reviewSummary && !loadingReviews && (
+                                    <motion.button
+                                        className={styles.reviewBtn}
+                                        onClick={fetchReviews}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        Generar con IA
+                                    </motion.button>
+                                )}
+                            </div>
+                            {loadingReviews && (
+                                <p className={styles.reviewLoading}>Analizando reseñas...</p>
+                            )}
+                            {reviewSummary && <p className={styles.reviewText}>{reviewSummary}</p>}
+                        </div>
 
                         {movie.production_companies?.length > 0 && (
                             <p className={styles.companies}>

@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });
 
 const TMDB_GENRES = {
     action: 28,
@@ -47,4 +47,39 @@ const parseSearchQuery = async (userInput) => {
     };
 };
 
-module.exports = { parseSearchQuery, TMDB_GENRES };
+const getPersonalizedRecommendations = async (favorites) => {
+    const titles = favorites.map((f) => f.title).join(', ');
+    const prompt =
+        'Based on these favorite movies: ' +
+        titles +
+        '. ' +
+        'Suggest 3 genre combinations the user would enjoy. ' +
+        'Return ONLY a JSON array of objects with keys "genres" (array of genre keys from: action, adventure, animation, comedy, crime, documentary, drama, family, fantasy, history, horror, music, mystery, romance, science_fiction, thriller, war, western) and "reason" (short Spanish explanation, max 8 words). ' +
+        'Example: [{"genres":["thriller","mystery"],"reason":"Suspenso psicológico como tus favoritos"}]. No markdown, no extra text.';
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text().trim();
+    return JSON.parse(text);
+};
+
+const summarizeReviews = async (movieTitle, reviews) => {
+    if (!reviews.length) return null;
+    const reviewTexts = reviews.map((r, i) => i + 1 + '. ' + r.content.slice(0, 300)).join('\n');
+    const prompt =
+        'Summarize these reviews for the movie "' +
+        movieTitle +
+        '" in Spanish in 3 sentences max. ' +
+        'Be direct and mention the general consensus. Reviews:\n' +
+        reviewTexts +
+        '\nRespond ONLY with the summary text.';
+
+    const result = await model.generateContent(prompt);
+    return result.response.text().trim();
+};
+
+module.exports = {
+    parseSearchQuery,
+    getPersonalizedRecommendations,
+    summarizeReviews,
+    TMDB_GENRES,
+};

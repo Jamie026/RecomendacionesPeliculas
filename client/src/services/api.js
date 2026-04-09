@@ -13,5 +13,7 @@ export const getMovieDetails = (id) => api.get('/movies/' + id);
 export const getMovieVideos = (id) => api.get('/movies/' + id + '/videos');
 export const getHistory = () => api.get('/history');
 export const clearHistory = () => api.delete('/history');
+export const getRecommendations = () => api.get('/recommendations');
+export const getMovieReviews = (id) => api.get('/movies/' + id + '/reviews');
 
 export default api;

@@ -5,6 +5,7 @@ const searchRoutes = require('./search.routes');
 const favoritesRoutes = require('./favorites.routes');
 const watchlistRoutes = require('./watchlist.routes');
 const historyRoutes = require('./history.routes');
+const recommendationsRoutes = require('./recommendations.routes');
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/search', searchRoutes);
 router.use('/favorites', favoritesRoutes);
 router.use('/watchlist', watchlistRoutes);
 router.use('/history', historyRoutes);
+router.use('/recommendations', recommendationsRoutes);
 
 module.exports = router;

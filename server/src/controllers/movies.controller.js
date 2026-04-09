@@ -1,4 +1,10 @@
-const { searchMovies, getMovieDetails, getMovieVideos } = require('../services/tmdb');
+const {
+    searchMovies,
+    getMovieDetails,
+    getMovieVideos,
+    getMovieReviews,
+} = require('../services/tmdb');
+const { summarizeReviews } = require('../services/gemini');
 
 const videos = async (req, res) => {
     const { id } = req.params;
@@ -45,4 +51,16 @@ const details = async (req, res) => {
     }
 };
 
-module.exports = { search, details, videos };
+const reviews = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const movie = await getMovieDetails(id);
+        const rawReviews = await getMovieReviews(id);
+        const summary = await summarizeReviews(movie.title, rawReviews);
+        res.json({ summary, total: rawReviews.length });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { search, details, videos, reviews };

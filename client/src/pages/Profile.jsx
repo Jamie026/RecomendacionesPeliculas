@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useRecommendations from '../hooks/useRecommendations';
+import RecommendationRow from '../components/RecommendationRow';
 import useUserLists from '../hooks/useUserLists';
 import useHistory from '../hooks/useHistory';
 import styles from './Profile.module.css';
@@ -42,6 +44,7 @@ const MovieMiniCard = ({ item, onRemove, onNavigate }) => (
 export default function Profile() {
     const { user } = useAuth();
     const { favorites, watchlist, toggleFavorite, toggleWatchlist } = useUserLists();
+    const { recommendations, loading: recLoading, loaded, load } = useRecommendations();
     const { history, clear } = useHistory();
     const navigate = useNavigate();
 
@@ -171,6 +174,35 @@ export default function Profile() {
                         ))}
                     </div>
                 )}
+            </section>
+            <section className={styles.section}>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                        ✦ Para ti <span className={styles.sectionCount}>IA</span>
+                    </h2>
+                    {!loaded && (
+                        <motion.button
+                            className={styles.clearBtn}
+                            onClick={load}
+                            disabled={recLoading}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            {recLoading ? 'Analizando...' : 'Generar'}
+                        </motion.button>
+                    )}
+                </div>
+                {!loaded && !recLoading && (
+                    <p className={styles.empty}>Genera recomendaciones basadas en tus favoritos</p>
+                )}
+                {recLoading && (
+                    <div className={styles.recLoader}>
+                        <div className={styles.loader} />
+                        <p>Analizando tus gustos...</p>
+                    </div>
+                )}
+                {recommendations.map((group, i) => (
+                    <RecommendationRow key={i} group={group} index={i} />
+                ))}
             </section>
         </motion.div>
     );
