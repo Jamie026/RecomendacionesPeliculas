@@ -13,26 +13,43 @@ export default function Home() {
             className={styles.container}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
         >
             <div className={styles.hero}>
+                <motion.p
+                    className={styles.eyebrow}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                >
+                    Powered by AI
+                </motion.p>
                 <motion.h1
                     className={styles.title}
-                    initial={{ opacity: 0, y: -20 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
                 >
-                    Encuentra tu próxima <span className={styles.accent}>película</span>
+                    ENCUENTRA TU
+                    <br />
+                    <span className={styles.titleAccent}>próxima película</span>
                 </motion.h1>
                 <motion.p
                     className={styles.subtitle}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
+                    transition={{ delay: 0.35 }}
                 >
-                    Describe lo que quieres ver y la IA encontrará las mejores opciones
+                    Describe lo que quieres ver y la IA encontrará las mejores opciones para ti
                 </motion.p>
-                <SearchBar onSearch={search} loading={loading} />
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45 }}
+                    style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                >
+                    <SearchBar onSearch={search} loading={loading} />
+                </motion.div>
             </div>
 
             <AnimatePresence>
@@ -46,15 +63,6 @@ export default function Home() {
                         {error}
                     </motion.p>
                 )}
-                {parsedQuery && !loading && (
-                    <motion.p
-                        className={styles.parsedQuery}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                    >
-                        Resultados para: <span>{parsedQuery}</span>
-                    </motion.p>
-                )}
                 {loading && (
                     <motion.div
                         className={styles.loaderWrapper}
@@ -63,13 +71,26 @@ export default function Home() {
                         exit={{ opacity: 0 }}
                     >
                         <div className={styles.loader} />
-                        <p>Analizando tu búsqueda...</p>
+                        <p>Analizando búsqueda</p>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {!loading && movies.length > 0 && (
                 <>
+                    {parsedQuery && (
+                        <motion.div
+                            className={styles.resultsHeader}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            <div className={styles.resultsLine} />
+                            <p className={styles.parsedQuery}>
+                                Resultados para: <span>{parsedQuery}</span>
+                            </p>
+                            <div className={styles.resultsLine} />
+                        </motion.div>
+                    )}
                     <motion.div
                         className={styles.grid}
                         initial={{ opacity: 0 }}

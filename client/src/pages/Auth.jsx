@@ -27,7 +27,6 @@ export default function Auth() {
             const payload = isLogin
                 ? { email: form.email, password: form.password }
                 : { username: form.username, email: form.email, password: form.password };
-
             const { data } = await api.post(endpoint, payload);
             login(data.token, data.user);
             navigate('/');
@@ -42,11 +41,16 @@ export default function Auth() {
         <div className={styles.container}>
             <motion.div
                 className={styles.card}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.5 }}
             >
-                <h1 className={styles.logo}>🎬 CineAI</h1>
+                <div className={styles.logoBlock}>
+                    <p className={styles.logoText}>
+                        CINE<span>AI</span>
+                    </p>
+                    <p className={styles.logoSub}>Tu cinemateca inteligente</p>
+                </div>
 
                 <div className={styles.tabs}>
                     <button
@@ -68,16 +72,18 @@ export default function Auth() {
                         {!isLogin && (
                             <motion.div
                                 key="username"
+                                className={styles.inputGroup}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
                             >
+                                <label className={styles.label}>Usuario</label>
                                 <input
                                     className={styles.input}
                                     name="username"
                                     type="text"
-                                    placeholder="Usuario"
+                                    placeholder="tu_usuario"
                                     value={form.username}
                                     onChange={handleChange}
                                     required={!isLogin}
@@ -86,24 +92,31 @@ export default function Auth() {
                         )}
                     </AnimatePresence>
 
-                    <input
-                        className={styles.input}
-                        name="email"
-                        type="email"
-                        placeholder="Correo electrónico"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    <input
-                        className={styles.input}
-                        name="password"
-                        type="password"
-                        placeholder="Contraseña"
-                        value={form.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label}>Correo electrónico</label>
+                        <input
+                            className={styles.input}
+                            name="email"
+                            type="email"
+                            placeholder="correo@ejemplo.com"
+                            value={form.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <label className={styles.label}>Contraseña</label>
+                        <input
+                            className={styles.input}
+                            name="password"
+                            type="password"
+                            placeholder="••••••••"
+                            value={form.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
 
                     <AnimatePresence>
                         {error && (
@@ -122,7 +135,6 @@ export default function Auth() {
                         className={styles.button}
                         type="submit"
                         disabled={loading}
-                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
                         {loading ? 'Cargando...' : isLogin ? 'Entrar' : 'Crear cuenta'}

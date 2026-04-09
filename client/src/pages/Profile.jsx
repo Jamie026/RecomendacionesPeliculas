@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import useUserLists from '../hooks/useUserLists';
+import useHistory from '../hooks/useHistory';
 import styles from './Profile.module.css';
 
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
@@ -11,7 +12,7 @@ const MovieMiniCard = ({ item, onRemove, onNavigate }) => (
     <motion.div
         className={styles.miniCard}
         onClick={() => onNavigate('/movie/' + item.movieId)}
-        whileHover={{ y: -4, scale: 1.03 }}
+        whileHover={{ y: -4 }}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
     >
@@ -41,6 +42,7 @@ const MovieMiniCard = ({ item, onRemove, onNavigate }) => (
 export default function Profile() {
     const { user } = useAuth();
     const { favorites, watchlist, toggleFavorite, toggleWatchlist } = useUserLists();
+    const { history, clear } = useHistory();
     const navigate = useNavigate();
 
     if (!user) {
@@ -64,14 +66,33 @@ export default function Profile() {
             transition={{ duration: 0.5 }}
         >
             <div className={styles.header}>
-                <h1 className={styles.username}>👤 {user.username}</h1>
-                <p className={styles.email}>{user.email}</p>
+                <div className={styles.avatar}>{user.username[0].toUpperCase()}</div>
+                <div className={styles.userInfo}>
+                    <h1 className={styles.username}>{user.username.toUpperCase()}</h1>
+                    <p className={styles.email}>{user.email}</p>
+                </div>
+                <div className={styles.stats}>
+                    <div className={styles.stat}>
+                        <span className={styles.statNum}>{favorites.length}</span>
+                        <span className={styles.statLabel}>Favoritos</span>
+                    </div>
+                    <div className={styles.stat}>
+                        <span className={styles.statNum}>{watchlist.length}</span>
+                        <span className={styles.statLabel}>Por ver</span>
+                    </div>
+                    <div className={styles.stat}>
+                        <span className={styles.statNum}>{history.length}</span>
+                        <span className={styles.statLabel}>Búsquedas</span>
+                    </div>
+                </div>
             </div>
 
             <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                    ❤️ Favoritos <span>{favorites.length}</span>
-                </h2>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                        ❤ Favoritos <span className={styles.sectionCount}>{favorites.length}</span>
+                    </h2>
+                </div>
                 {favorites.length === 0 ? (
                     <p className={styles.empty}>No tienes favoritos aún</p>
                 ) : (
@@ -89,9 +110,11 @@ export default function Profile() {
             </section>
 
             <section className={styles.section}>
-                <h2 className={styles.sectionTitle}>
-                    🔖 Quiero ver <span>{watchlist.length}</span>
-                </h2>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                        ◈ Quiero ver <span className={styles.sectionCount}>{watchlist.length}</span>
+                    </h2>
+                </div>
                 {watchlist.length === 0 ? (
                     <p className={styles.empty}>Tu lista está vacía</p>
                 ) : (
@@ -103,6 +126,48 @@ export default function Profile() {
                                 onRemove={() => toggleWatchlist(toMovie(item))}
                                 onNavigate={navigate}
                             />
+                        ))}
+                    </div>
+                )}
+            </section>
+
+            <section className={styles.section}>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>
+                        ◷ Historial <span className={styles.sectionCount}>{history.length}</span>
+                    </h2>
+                    {history.length > 0 && (
+                        <motion.button
+                            className={styles.clearBtn}
+                            onClick={clear}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            Limpiar
+                        </motion.button>
+                    )}
+                </div>
+                {history.length === 0 ? (
+                    <p className={styles.empty}>No hay búsquedas recientes</p>
+                ) : (
+                    <div className={styles.historyList}>
+                        {history.map((item, i) => (
+                            <motion.div
+                                key={item.id}
+                                className={styles.historyItem}
+                                initial={{ opacity: 0, x: -15 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.04 }}
+                                onClick={() => navigate('/?q=' + item.query)}
+                            >
+                                <span className={styles.historyIcon}>⌕</span>
+                                <div>
+                                    <p className={styles.historyQuery}>{item.query}</p>
+                                    <p className={styles.historyParsed}>{item.parsedQuery}</p>
+                                </div>
+                                <span className={styles.historyDate}>
+                                    {new Date(item.createdAt).toLocaleDateString('es-PE')}
+                                </span>
+                            </motion.div>
                         ))}
                     </div>
                 )}

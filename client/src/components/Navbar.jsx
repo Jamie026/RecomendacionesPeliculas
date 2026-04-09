@@ -15,24 +15,22 @@ export default function Navbar() {
     return (
         <motion.nav
             className={styles.navbar}
-            initial={{ y: -60, opacity: 0 }}
+            initial={{ y: -64, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
         >
             <Link to="/" className={styles.logo}>
-                🎬 CineAI
+                CINE<span>AI</span>
             </Link>
-
             <div className={styles.actions}>
                 {user ? (
                     <>
                         <Link to="/profile" className={styles.username}>
-                            👤 {user.username}
+                            ◈ {user.username}
                         </Link>
                         <motion.button
                             className={styles.logoutBtn}
                             onClick={handleLogout}
-                            whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
                             Salir
@@ -42,7 +40,6 @@ export default function Navbar() {
                     <motion.button
                         className={styles.loginBtn}
                         onClick={() => navigate('/auth')}
-                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
                         Iniciar sesión

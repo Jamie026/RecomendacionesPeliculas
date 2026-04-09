@@ -67,31 +67,33 @@ export default function MovieDetail() {
                 <motion.button
                     className={styles.backButton}
                     onClick={() => navigate(-1)}
-                    whileHover={{ x: -4 }}
+                    whileHover={{ x: -3 }}
                     whileTap={{ scale: 0.95 }}
                 >
                     ← Volver
                 </motion.button>
 
                 <div className={styles.main}>
-                    <motion.img
-                        className={styles.poster}
-                        src={posterUrl}
-                        alt={movie.title}
+                    <motion.div
+                        className={styles.posterWrapper}
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                    />
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                    >
+                        <img className={styles.poster} src={posterUrl} alt={movie.title} />
+                        <div className={styles.posterGlow} />
+                    </motion.div>
 
                     <motion.div
                         className={styles.info}
                         initial={{ opacity: 0, x: 30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
                     >
-                        <h1 className={styles.title}>{movie.title}</h1>
-
-                        {movie.tagline && <p className={styles.tagline}>"{movie.tagline}"</p>}
+                        <div className={styles.titleBlock}>
+                            <h1 className={styles.title}>{movie.title.toUpperCase()}</h1>
+                            {movie.tagline && <p className={styles.tagline}>"{movie.tagline}"</p>}
+                        </div>
 
                         <div className={styles.meta}>
                             <span className={styles.badge}>⭐ {movie.vote_average.toFixed(1)}</span>
@@ -115,6 +117,7 @@ export default function MovieDetail() {
                             ))}
                         </div>
 
+                        <div className={styles.divider} />
                         <p className={styles.overview}>{movie.overview}</p>
 
                         {movie.production_companies?.length > 0 && (
@@ -131,10 +134,11 @@ export default function MovieDetail() {
                             <motion.button
                                 className={styles.trailerBtn}
                                 onClick={() => setShowTrailer(true)}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
                             >
-                                ▶ Ver trailer
+                                <span className={styles.trailerIcon}>▶</span>
+                                Ver trailer
                             </motion.button>
                         )}
                     </motion.div>

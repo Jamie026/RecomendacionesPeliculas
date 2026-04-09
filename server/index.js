@@ -15,7 +15,7 @@ const start = async () => {
     try {
         await sequelize.authenticate();
         console.log('MySQL conectado correctamente');
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ alter: false });
         console.log('Modelos sincronizados');
         app.listen(PORT, () => {
             console.log('Server corriendo en http://localhost:', PORT);
