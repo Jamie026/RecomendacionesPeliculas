@@ -38,30 +38,6 @@ Describe lo que quieres ver en lenguaje natural y la IA encuentra las mejores op
 
 ---
 
-## Estructura
-
-movie-finder/
-├── client/ # React + Vite
-│ ├── src/
-│ │ ├── components/
-│ │ ├── context/
-│ │ ├── hooks/
-│ │ ├── pages/
-│ │ ├── services/
-│ │ └── styles/
-│ └── index.html
-└── server/ # Express + Node
-├── src/
-│ ├── config/
-│ ├── controllers/
-│ ├── middlewares/
-│ ├── models/
-│ ├── routes/
-│ └── services/
-└── index.js
-
----
-
 ## Requisitos previos
 
 - Node.js 18+
@@ -193,7 +169,3 @@ npm run dev
 | GET    | `/api/recommendations`    | Recomendaciones personalizadas con IA |
 
 ---
-
-## Licencia
-
-MIT
