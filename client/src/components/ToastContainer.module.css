@@ -1,0 +1,30 @@
+.container {
+    position: fixed;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    color: var(--text-primary);
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.add {
+    border-color: var(--border-accent);
+}
+
+.remove {
+    opacity: 0.75;
+}

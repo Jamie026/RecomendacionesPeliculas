@@ -1,7 +1,9 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import AuthProvider from "./context/AuthProvider";
+import ToastProvider from "./context/ToastProvider";
 import UserListsProvider from "./context/UserListsProvider";
+import ToastContainer from "./components/ToastContainer";
 import Navbar from "./components/Navbar";
 import PageTransition from "./components/PageTransition";
 import Home from "./pages/Home";
@@ -14,6 +16,8 @@ export default function App() {
 
     return (
         <AuthProvider>
+            <ToastProvider>
+            <ToastContainer />
             <UserListsProvider>
                 <Navbar />
                 <AnimatePresence mode="wait">
@@ -53,6 +57,7 @@ export default function App() {
                     </Routes>
                 </AnimatePresence>
             </UserListsProvider>
+            </ToastProvider>
         </AuthProvider>
     );
 }

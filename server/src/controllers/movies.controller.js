@@ -3,6 +3,7 @@ const {
     getMovieDetails,
     getMovieVideos,
     getMovieReviews,
+    getTrendingMovies,
 } = require("../services/tmdb");
 const { summarizeReviews } = require("../services/gemini");
 
@@ -54,4 +55,13 @@ const reviews = async (req, res) => {
     }
 };
 
-module.exports = { search, details, videos, reviews };
+const trending = async (req, res) => {
+    try {
+        const movies = await getTrendingMovies();
+        res.json(movies);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { search, details, videos, reviews, trending };

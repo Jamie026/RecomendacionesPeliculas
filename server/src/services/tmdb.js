@@ -40,6 +40,13 @@ const getMovieVideos = async (movieId, language = "es-ES") => {
     return data.results;
 };
 
+const getTrendingMovies = async () => {
+    const { data } = await tmdb.get("/trending/movie/week", {
+        params: { language: "es-ES" },
+    });
+    return data.results;
+};
+
 const getMovieReviews = async (movieId) => {
     const { data } = await tmdb.get("/movie/" + movieId + "/reviews", {
         params: { language: "es-ES", page: 1 },
@@ -47,4 +54,4 @@ const getMovieReviews = async (movieId) => {
     return data.results.slice(0, 5);
 };
 
-module.exports = { searchMovies, discoverMovies, getMovieDetails, getMovieVideos, getMovieReviews };
+module.exports = { searchMovies, discoverMovies, getMovieDetails, getMovieVideos, getMovieReviews, getTrendingMovies };

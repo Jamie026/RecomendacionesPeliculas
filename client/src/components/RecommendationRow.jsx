@@ -20,7 +20,7 @@ export default function RecommendationRow({ group, index }) {
                 <div className={styles.tags}>
                     {group.genres.map((g) => (
                         <span key={g} className={styles.tag}>
-                            {g}
+                            {g.replace("_", " ")}
                         </span>
                     ))}
                 </div>

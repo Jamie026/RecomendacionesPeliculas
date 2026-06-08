@@ -3,10 +3,12 @@ import SearchBar from "../components/SearchBar";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 import useSearch from "../hooks/useSearch";
+import useTrending from "../hooks/useTrending";
 import styles from "./Home.module.css";
 
 export default function Home() {
     const { movies, loading, error, parsedQuery, page, totalPages, search, goToPage } = useSearch();
+    const { movies: trending, loading: trendingLoading } = useTrending();
 
     return (
         <motion.div
@@ -75,6 +77,38 @@ export default function Home() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {!loading && movies.length === 0 && !error && (
+                <>
+                    <motion.div
+                        className={styles.resultsHeader}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                    >
+                        <div className={styles.resultsLine} />
+                        <p className={styles.parsedQuery}>
+                            Tendencias <span>esta semana</span>
+                        </p>
+                        <div className={styles.resultsLine} />
+                    </motion.div>
+                    {trendingLoading ? (
+                        <div className={styles.loaderWrapper}>
+                            <div className={styles.loader} />
+                        </div>
+                    ) : (
+                        <motion.div
+                            className={styles.grid}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            {trending.map((movie, i) => (
+                                <MovieCard key={movie.id} movie={movie} index={i} />
+                            ))}
+                        </motion.div>
+                    )}
+                </>
+            )}
 
             {!loading && movies.length > 0 && (
                 <>

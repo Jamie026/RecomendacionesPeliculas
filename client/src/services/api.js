@@ -15,5 +15,6 @@ export const getHistory = () => api.get("/history");
 export const clearHistory = () => api.delete("/history");
 export const getRecommendations = () => api.get("/recommendations");
 export const getMovieReviews = (id) => api.get("/movies/" + id + "/reviews");
+export const getTrending = () => api.get("/movies/trending");
 
 export default api;

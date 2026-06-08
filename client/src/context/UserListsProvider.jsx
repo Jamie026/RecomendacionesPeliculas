@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { UserListsContext } from "./UserListsContext";
 import useAuth from "../hooks/useAuth";
+import useToast from "../hooks/useToast";
 import api from "../services/api";
 
 export default function UserListsProvider({ children }) {
     const { user } = useAuth();
+    const { addToast } = useToast();
     const [favorites, setFavorites] = useState([]);
     const [watchlist, setWatchlist] = useState([]);
 
@@ -21,6 +23,7 @@ export default function UserListsProvider({ children }) {
         if (isFavorite(movie.id)) {
             await api.delete("/favorites/" + movie.id);
             setFavorites(favorites.filter((f) => f.movieId !== movie.id));
+            addToast("Eliminado de favoritos", "remove");
         } else {
             const { data } = await api.post("/favorites", {
                 movieId: movie.id,
@@ -30,6 +33,7 @@ export default function UserListsProvider({ children }) {
                 releaseDate: movie.release_date,
             });
             setFavorites([...favorites, data]);
+            addToast("❤ Agregado a favoritos");
         }
     };
 
@@ -37,6 +41,7 @@ export default function UserListsProvider({ children }) {
         if (isInWatchlist(movie.id)) {
             await api.delete("/watchlist/" + movie.id);
             setWatchlist(watchlist.filter((w) => w.movieId !== movie.id));
+            addToast("Eliminado de Quiero ver", "remove");
         } else {
             const { data } = await api.post("/watchlist", {
                 movieId: movie.id,
@@ -46,6 +51,7 @@ export default function UserListsProvider({ children }) {
                 releaseDate: movie.release_date,
             });
             setWatchlist([...watchlist, data]);
+            addToast("◈ Agregado a 'Quiero ver'");
         }
     };
 
