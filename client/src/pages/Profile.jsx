@@ -162,7 +162,7 @@ export default function Profile() {
                                 initial={{ opacity: 0, x: -15 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: i * 0.04 }}
-                                onClick={() => navigate("/?q=" + item.query)}
+                                onClick={() => navigate("/?query=" + encodeURIComponent(item.query))}
                             >
                                 <span className={styles.historyIcon}>⌕</span>
                                 <div>

@@ -1,36 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import { smartSearch } from "../services/api";
 
 export default function useSearch() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [movies, setMovies] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [totalPages, setTotalPages] = useState(0);
     const [error, setError] = useState(null);
     const [parsedQuery, setParsedQuery] = useState("");
-    const [currentQuery, setCurrentQuery] = useState("");
-    const [currentGenreIds, setCurrentGenreIds] = useState(null);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [fetchedFor, setFetchedFor] = useState({ query: "", page: 0 });
 
-    const search = async (query, pageNumber = 1, genreIds = null) => {
-        if (!query.trim()) return;
-        setLoading(true);
-        setError(null);
-        try {
-            const { data } = await smartSearch(query, pageNumber, genreIds);
-            setMovies(data.movies);
-            setParsedQuery(data.keywords);
-            setCurrentQuery(query);
-            setCurrentGenreIds(data.genreIds);
-            setPage(data.page);
-            setTotalPages(Math.min(data.totalPages, 10));
-        } catch {
-            setError("Error al buscar películas");
-        } finally {
-            setLoading(false);
+    const query = searchParams.get("query") || "";
+    const page = Number(searchParams.get("page") || 1);
+    const genreIdsStr = searchParams.get("genreIds") || "";
+
+    const loading = !!query && (fetchedFor.query !== query || fetchedFor.page !== page);
+
+    const skipNextRef = useRef(false);
+
+    useEffect(() => {
+        if (!query) return;
+        if (skipNextRef.current) {
+            skipNextRef.current = false;
+            return;
         }
+        const genreIds = genreIdsStr ? genreIdsStr.split(",").map(Number) : null;
+        smartSearch(query, page, genreIds)
+            .then(({ data }) => {
+                setError(null);
+                setMovies(data.movies);
+                setParsedQuery(data.keywords);
+                setTotalPages(Math.min(data.totalPages, 10));
+                setFetchedFor({ query, page });
+                if (!genreIds && data.genreIds?.length) {
+                    skipNextRef.current = true;
+                    setSearchParams(
+                        { query, page: String(page), genreIds: data.genreIds.join(",") },
+                        { replace: true }
+                    );
+                }
+            })
+            .catch(() => setError("Error al buscar películas"));
+    }, [query, page, genreIdsStr, setSearchParams]);
+
+    const search = (newQuery) => {
+        if (!newQuery.trim()) return;
+        setSearchParams({ query: newQuery, page: "1" });
     };
 
-    const goToPage = (pageNumber) => search(currentQuery, pageNumber, currentGenreIds);
+    const goToPage = (pageNumber) => {
+        const params = { query, page: String(pageNumber) };
+        if (genreIdsStr) params.genreIds = genreIdsStr;
+        setSearchParams(params);
+    };
 
     return { movies, loading, error, parsedQuery, page, totalPages, search, goToPage };
 }

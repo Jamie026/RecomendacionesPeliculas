@@ -83,7 +83,7 @@ export default function Auth() {
                                     className={styles.input}
                                     name="username"
                                     type="text"
-                                    placeholder="tu_usuario"
+                                    placeholder="Usuario"
                                     value={form.username}
                                     onChange={handleChange}
                                     required={!isLogin}
