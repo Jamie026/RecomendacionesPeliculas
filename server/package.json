@@ -22,6 +22,9 @@
         "sequelize": "^6.37.8"
     },
     "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "eslint": "^10.4.1",
+        "globals": "^17.6.0",
         "nodemon": "^3.1.14"
     }
 }

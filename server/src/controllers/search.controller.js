@@ -1,17 +1,17 @@
-const { parseSearchQuery } = require('../services/gemini');
-const { searchMovies, discoverMovies } = require('../services/tmdb');
-const { SearchHistory } = require('../models');
+const { parseSearchQuery } = require("../services/gemini");
+const { searchMovies, discoverMovies } = require("../services/tmdb");
+const { SearchHistory } = require("../models");
 
 const smartSearch = async (req, res) => {
     const { query, page = 1, genreIds: rawGenreIds } = req.query;
-    if (!query) return res.status(400).json({ error: 'Query is required' });
+    if (!query) return res.status(400).json({ error: "Query is required" });
 
     try {
         let genreIds;
         let keywords;
 
         if (rawGenreIds) {
-            genreIds = rawGenreIds.split(',').map(Number);
+            genreIds = rawGenreIds.split(",").map(Number);
             keywords = query;
         } else {
             const parsed = await parseSearchQuery(query);

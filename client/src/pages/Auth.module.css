@@ -9,7 +9,7 @@
 }
 
 .container::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -30%;
     left: -20%;
@@ -20,7 +20,7 @@
 }
 
 .container::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -20%;
     right: -10%;
@@ -46,7 +46,7 @@
 }
 
 .card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 10%;

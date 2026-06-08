@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import styles from './RecommendationRow.module.css';
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import styles from "./RecommendationRow.module.css";
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-const PLACEHOLDER = 'https://via.placeholder.com/500x750?text=Sin+imagen';
+const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
+const PLACEHOLDER = "https://via.placeholder.com/500x750?text=Sin+imagen";
 
 export default function RecommendationRow({ group, index }) {
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ export default function RecommendationRow({ group, index }) {
                     <motion.div
                         key={movie.id}
                         className={styles.card}
-                        onClick={() => navigate('/movie/' + movie.id)}
+                        onClick={() => navigate("/movie/" + movie.id)}
                         whileHover={{ y: -6, scale: 1.03 }}
                     >
                         <img
@@ -41,7 +41,7 @@ export default function RecommendationRow({ group, index }) {
                         <div className={styles.cardInfo}>
                             <p className={styles.cardTitle}>{movie.title}</p>
                             <span className={styles.cardYear}>
-                                {movie.release_date ? movie.release_date.slice(0, 4) : 'N/A'}
+                                {movie.release_date ? movie.release_date.slice(0, 4) : "N/A"}
                             </span>
                         </div>
                     </motion.div>

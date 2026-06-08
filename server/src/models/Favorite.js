@@ -1,8 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const User = require('./User');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
+const User = require("./User");
 
-const Favorite = sequelize.define('Favorite', {
+const Favorite = sequelize.define("Favorite", {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     movieId: { type: DataTypes.INTEGER, allowNull: false },
     title: { type: DataTypes.STRING, allowNull: false },
@@ -11,7 +11,7 @@ const Favorite = sequelize.define('Favorite', {
     releaseDate: { type: DataTypes.STRING },
 });
 
-Favorite.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Favorite, { foreignKey: 'userId' });
+Favorite.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Favorite, { foreignKey: "userId" });
 
 module.exports = Favorite;

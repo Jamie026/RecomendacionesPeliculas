@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { smartSearch } from '../services/api';
+import { useState } from "react";
+import { smartSearch } from "../services/api";
 
 export default function useSearch() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [parsedQuery, setParsedQuery] = useState('');
-    const [currentQuery, setCurrentQuery] = useState('');
+    const [parsedQuery, setParsedQuery] = useState("");
+    const [currentQuery, setCurrentQuery] = useState("");
     const [currentGenreIds, setCurrentGenreIds] = useState(null);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -24,7 +24,7 @@ export default function useSearch() {
             setPage(data.page);
             setTotalPages(Math.min(data.totalPages, 10));
         } catch {
-            setError('Error al buscar películas');
+            setError("Error al buscar películas");
         } finally {
             setLoading(false);
         }

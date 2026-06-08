@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './SearchBar.module.css';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import styles from "./SearchBar.module.css";
 
 export default function SearchBar({ onSearch, loading }) {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,7 +35,7 @@ export default function SearchBar({ onSearch, loading }) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    {loading ? 'Buscando...' : 'Buscar'}
+                    {loading ? "Buscando..." : "Buscar"}
                 </motion.button>
             </div>
         </motion.form>

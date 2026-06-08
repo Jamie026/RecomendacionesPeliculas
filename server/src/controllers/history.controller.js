@@ -1,10 +1,10 @@
-const { SearchHistory } = require('../models');
+const { SearchHistory } = require("../models");
 
 const getAll = async (req, res) => {
     try {
         const history = await SearchHistory.findAll({
             where: { userId: req.user.id },
-            order: [['createdAt', 'DESC']],
+            order: [["createdAt", "DESC"]],
             limit: 20,
         });
         res.json(history);

@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import styles from './Navbar.module.css';
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
@@ -9,7 +9,7 @@ export default function Navbar() {
 
     const handleLogout = () => {
         logout();
-        navigate('/');
+        navigate("/");
     };
 
     return (
@@ -17,7 +17,7 @@ export default function Navbar() {
             className={styles.navbar}
             initial={{ y: -64, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
         >
             <Link to="/" className={styles.logo}>
                 CINE<span>AI</span>
@@ -39,7 +39,7 @@ export default function Navbar() {
                 ) : (
                     <motion.button
                         className={styles.loginBtn}
-                        onClick={() => navigate('/auth')}
+                        onClick={() => navigate("/auth")}
                         whileTap={{ scale: 0.95 }}
                     >
                         Iniciar sesión

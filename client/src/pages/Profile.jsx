@@ -1,19 +1,20 @@
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import useRecommendations from '../hooks/useRecommendations';
-import RecommendationRow from '../components/RecommendationRow';
-import useUserLists from '../hooks/useUserLists';
-import useHistory from '../hooks/useHistory';
-import styles from './Profile.module.css';
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import useRecommendations from "../hooks/useRecommendations";
+import RecommendationRow from "../components/RecommendationRow";
+import useUserLists from "../hooks/useUserLists";
+import useHistory from "../hooks/useHistory";
+import styles from "./Profile.module.css";
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-const PLACEHOLDER = 'https://via.placeholder.com/500x750?text=Sin+imagen';
+const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
+const PLACEHOLDER = "https://via.placeholder.com/500x750?text=Sin+imagen";
 
 const MovieMiniCard = ({ item, onRemove, onNavigate }) => (
     <motion.div
         className={styles.miniCard}
-        onClick={() => onNavigate('/movie/' + item.movieId)}
+        onClick={() => onNavigate("/movie/" + item.movieId)}
         whileHover={{ y: -4 }}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -35,23 +36,24 @@ const MovieMiniCard = ({ item, onRemove, onNavigate }) => (
         <div className={styles.miniInfo}>
             <p className={styles.miniTitle}>{item.title}</p>
             <span className={styles.miniYear}>
-                {item.releaseDate ? item.releaseDate.slice(0, 4) : 'N/A'}
+                {item.releaseDate ? item.releaseDate.slice(0, 4) : "N/A"}
             </span>
         </div>
     </motion.div>
 );
 
 export default function Profile() {
-    const { user } = useAuth();
+    const { user, loading: authLoading } = useAuth();
     const { favorites, watchlist, toggleFavorite, toggleWatchlist } = useUserLists();
     const { recommendations, loading: recLoading, loaded, load } = useRecommendations();
     const { history, clear } = useHistory();
     const navigate = useNavigate();
 
-    if (!user) {
-        navigate('/auth');
-        return null;
-    }
+    useEffect(() => {
+        if (!authLoading && !user) navigate("/auth");
+    }, [authLoading, user, navigate]);
+
+    if (authLoading || !user) return null;
 
     const toMovie = (item) => ({
         id: item.movieId,
@@ -160,7 +162,7 @@ export default function Profile() {
                                 initial={{ opacity: 0, x: -15 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: i * 0.04 }}
-                                onClick={() => navigate('/?q=' + item.query)}
+                                onClick={() => navigate("/?q=" + item.query)}
                             >
                                 <span className={styles.historyIcon}>⌕</span>
                                 <div>
@@ -168,7 +170,7 @@ export default function Profile() {
                                     <p className={styles.historyParsed}>{item.parsedQuery}</p>
                                 </div>
                                 <span className={styles.historyDate}>
-                                    {new Date(item.createdAt).toLocaleDateString('es-PE')}
+                                    {new Date(item.createdAt).toLocaleDateString("es-PE")}
                                 </span>
                             </motion.div>
                         ))}
@@ -187,7 +189,7 @@ export default function Profile() {
                             disabled={recLoading}
                             whileTap={{ scale: 0.95 }}
                         >
-                            {recLoading ? 'Analizando...' : 'Generar'}
+                            {recLoading ? "Analizando..." : "Generar"}
                         </motion.button>
                     )}
                 </div>

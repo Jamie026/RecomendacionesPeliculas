@@ -1,9 +1,9 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import SearchBar from '../components/SearchBar';
-import MovieCard from '../components/MovieCard';
-import Pagination from '../components/Pagination';
-import useSearch from '../hooks/useSearch';
-import styles from './Home.module.css';
+import { motion, AnimatePresence } from "framer-motion";
+import SearchBar from "../components/SearchBar";
+import MovieCard from "../components/MovieCard";
+import Pagination from "../components/Pagination";
+import useSearch from "../hooks/useSearch";
+import styles from "./Home.module.css";
 
 export default function Home() {
     const { movies, loading, error, parsedQuery, page, totalPages, search, goToPage } = useSearch();
@@ -46,7 +46,7 @@ export default function Home() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.45 }}
-                    style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+                    style={{ width: "100%", display: "flex", justifyContent: "center" }}
                 >
                     <SearchBar onSearch={search} loading={loading} />
                 </motion.div>

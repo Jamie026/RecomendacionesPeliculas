@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import useAuth from './useAuth';
-import { getHistory, clearHistory } from '../services/api';
+import { useState, useEffect } from "react";
+import useAuth from "./useAuth";
+import { getHistory, clearHistory } from "../services/api";
 
 export default function useHistory() {
     const { user } = useAuth();

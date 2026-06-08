@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { getMovieDetails, getMovieVideos, getMovieReviews } from '../services/api';
-import TrailerModal from '../components/TrailerModal';
-import styles from './MovieDetail.module.css';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { getMovieDetails, getMovieVideos, getMovieReviews } from "../services/api";
+import TrailerModal from "../components/TrailerModal";
+import styles from "./MovieDetail.module.css";
 
-const IMAGE_BASE = 'https://image.tmdb.org/t/p/';
+const IMAGE_BASE = "https://image.tmdb.org/t/p/";
 
 export default function MovieDetail() {
     const { id } = useParams();
@@ -39,7 +39,7 @@ export default function MovieDetail() {
                 setMovie(movieData);
                 setTrailer(trailerData);
             } catch {
-                navigate('/');
+                navigate("/");
             } finally {
                 setLoading(false);
             }
@@ -56,10 +56,10 @@ export default function MovieDetail() {
 
     if (!movie) return null;
 
-    const backdropUrl = movie.backdrop_path ? IMAGE_BASE + 'original' + movie.backdrop_path : null;
+    const backdropUrl = movie.backdrop_path ? IMAGE_BASE + "original" + movie.backdrop_path : null;
     const posterUrl = movie.poster_path
-        ? IMAGE_BASE + 'w500' + movie.poster_path
-        : 'https://via.placeholder.com/500x750?text=Sin+imagen';
+        ? IMAGE_BASE + "w500" + movie.poster_path
+        : "https://via.placeholder.com/500x750?text=Sin+imagen";
     const hours = Math.floor(movie.runtime / 60);
     const minutes = movie.runtime % 60;
 
@@ -159,7 +159,7 @@ export default function MovieDetail() {
                                 {movie.production_companies
                                     .slice(0, 3)
                                     .map((c) => c.name)
-                                    .join(', ')}
+                                    .join(", ")}
                             </p>
                         )}
 

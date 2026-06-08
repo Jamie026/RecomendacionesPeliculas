@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { getRecommendations } from '../services/api';
+import { useState } from "react";
+import { getRecommendations } from "../services/api";
 
 export default function useRecommendations() {
     const [recommendations, setRecommendations] = useState([]);

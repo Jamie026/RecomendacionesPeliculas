@@ -1,11 +1,11 @@
-const { getPersonalizedRecommendations, TMDB_GENRES } = require('../services/gemini');
-const { discoverMovies } = require('../services/tmdb');
-const { Favorite } = require('../models');
+const { getPersonalizedRecommendations, TMDB_GENRES } = require("../services/gemini");
+const { discoverMovies } = require("../services/tmdb");
+const { Favorite } = require("../models");
 
 const getRecommendations = async (req, res) => {
     try {
         const favorites = await Favorite.findAll({ where: { userId: req.user.id } });
-        if (favorites.length === 0) return res.status(400).json({ error: 'No favorites yet' });
+        if (favorites.length === 0) return res.status(400).json({ error: "No favorites yet" });
 
         const suggestions = await getPersonalizedRecommendations(favorites);
 

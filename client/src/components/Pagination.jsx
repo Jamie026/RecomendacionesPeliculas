@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
-import styles from './Pagination.module.css';
+import { motion } from "framer-motion";
+import styles from "./Pagination.module.css";
 
 export default function Pagination({ page, totalPages, onPageChange }) {
     if (totalPages <= 1) return null;
@@ -44,7 +44,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
             {pages.map((p) => (
                 <motion.button
                     key={p}
-                    className={styles.btn + (p === page ? ' ' + styles.active : '')}
+                    className={styles.btn + (p === page ? " " + styles.active : "")}
                     onClick={() => onPageChange(p)}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}

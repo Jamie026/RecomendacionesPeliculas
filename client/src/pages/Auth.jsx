@@ -1,37 +1,37 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import useAuth from '../hooks/useAuth';
-import api from '../services/api';
-import styles from './Auth.module.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import useAuth from "../hooks/useAuth";
+import api from "../services/api";
+import styles from "./Auth.module.css";
 
 export default function Auth() {
     const [isLogin, setIsLogin] = useState(true);
-    const [form, setForm] = useState({ username: '', email: '', password: '' });
-    const [error, setError] = useState('');
+    const [form, setForm] = useState({ username: "", email: "", password: "" });
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
-        setError('');
+        setError("");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
+        setError("");
         try {
-            const endpoint = isLogin ? '/auth/login' : '/auth/register';
+            const endpoint = isLogin ? "/auth/login" : "/auth/register";
             const payload = isLogin
                 ? { email: form.email, password: form.password }
                 : { username: form.username, email: form.email, password: form.password };
             const { data } = await api.post(endpoint, payload);
             login(data.token, data.user);
-            navigate('/');
+            navigate("/");
         } catch (err) {
-            setError(err.response?.data?.error || 'Ocurrió un error');
+            setError(err.response?.data?.error || "Ocurrió un error");
         } finally {
             setLoading(false);
         }
@@ -54,13 +54,13 @@ export default function Auth() {
 
                 <div className={styles.tabs}>
                     <button
-                        className={styles.tab + (isLogin ? ' ' + styles.activeTab : '')}
+                        className={styles.tab + (isLogin ? " " + styles.activeTab : "")}
                         onClick={() => setIsLogin(true)}
                     >
                         Iniciar sesión
                     </button>
                     <button
-                        className={styles.tab + (!isLogin ? ' ' + styles.activeTab : '')}
+                        className={styles.tab + (!isLogin ? " " + styles.activeTab : "")}
                         onClick={() => setIsLogin(false)}
                     >
                         Registrarse
@@ -74,7 +74,7 @@ export default function Auth() {
                                 key="username"
                                 className={styles.inputGroup}
                                 initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
+                                animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
                             >
@@ -137,7 +137,7 @@ export default function Auth() {
                         disabled={loading}
                         whileTap={{ scale: 0.98 }}
                     >
-                        {loading ? 'Cargando...' : isLogin ? 'Entrar' : 'Crear cuenta'}
+                        {loading ? "Cargando..." : isLogin ? "Entrar" : "Crear cuenta"}
                     </motion.button>
                 </form>
             </motion.div>

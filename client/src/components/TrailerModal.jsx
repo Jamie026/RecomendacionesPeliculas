@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import styles from './TrailerModal.module.css';
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import styles from "./TrailerModal.module.css";
 
 export default function TrailerModal({ videoKey, onClose }) {
     useEffect(() => {
         const handleKey = (e) => {
-            if (e.key === 'Escape') onClose();
+            if (e.key === "Escape") onClose();
         };
-        window.addEventListener('keydown', handleKey);
-        return () => window.removeEventListener('keydown', handleKey);
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
     }, [onClose]);
 
     return (
@@ -33,7 +33,7 @@ export default function TrailerModal({ videoKey, onClose }) {
                     </button>
                     <div className={styles.iframeWrapper}>
                         <iframe
-                            src={'https://www.youtube.com/embed/' + videoKey + '?autoplay=1'}
+                            src={"https://www.youtube.com/embed/" + videoKey + "?autoplay=1"}
                             title="Trailer"
                             frameBorder="0"
                             allow="autoplay; encrypted-media"
